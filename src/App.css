@@ -1,0 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  background: #141d2f;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
