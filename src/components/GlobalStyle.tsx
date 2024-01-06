@@ -1,6 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap");
+import { createGlobalStyle } from 'styled-components';
 
-body {
+const GlobalStyle = createGlobalStyle`
+ body {
   width: 100vw;
   height: 100vh;
   margin: 0;
@@ -8,4 +9,9 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  
 }
+
+`;
+
+export default GlobalStyle;
