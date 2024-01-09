@@ -1,82 +1,88 @@
-import Search from './components/search/Search'
-import Main from './components/mainCard/Main'
-import GlobalStyle from './components/GlobalStyle';
-import { useState } from "react";
-import styled from "styled-components";
+import  GlobalStyle  from './GlobalStyle';
+import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import Sun from './components/images/icon-sun.svg';
 import Moon from './components/images/icon-moon.svg';
 
-const Wrapper = styled.section`
- min-width:23.4rem;
-  display: inline-flex;
-  justify-content: space-between;
+interface DarkModeProps {
+  isDarkMode: boolean;
+}
+const Mode = styled.div`
+  width: 20.43rem;
+  height: 2.3rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
   gap: 6.875rem;
-  margin: 1.94rem auto 0 auto;
+  margin-top: 1.94rem ;
 `;
-const Title = styled.h1`
+
+const Title = styled.h1<DarkModeProps>`
+  width: 8rem;
   margin: 0;
-  color: #FFF;
-  font-family: "Space Mono", sans-serif;
+  color: ${(props) => (props.isDarkMode ? '#FFF' : '#000')};
   font-size: 1.625rem;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
 `;
 
-const Button = styled.button`
+const Button = styled.button<DarkModeProps>`
   margin: 0;
+  padding: 0;
   display: flex;
-  width: 5.5rem;
+  width: 5.56rem;
   height: 1.25rem;
-  padding-left: 0.1875rem;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
-  font-family: "Space Mono", sans-serif;
-  color: #FFF;
+  color: ${(props) => (props.isDarkMode ? '#FFF' : '#000')};
+  background: #141d2f;
   text-align: right;
   font-size: 0.8125rem;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   letter-spacing: 0.15625rem;
   border: none;
-  background: #141d2f;
   cursor: pointer;
 
   &:hover {
-    color: #90A4D4;
+    color: #90a4d4;
   }
 `;
-const Img = styled.img`
-  color: #fff;
+const Img = styled.img<DarkModeProps>`
+  width: 1.25rem;
+  height: 1.25rem;
+  color: ${(props) => (props.isDarkMode ? '#FFF' : '#000')};
 `;
 
-function App() {
 
-  const [isDarkMode, setIsDarkMode] = useState(true);
+function App() {
+  const [darkMode, setDarkMode] = useState(true);
+
+  useEffect(() => {
+    document.body.classList.toggle('light-mode', !darkMode);
+    document.body.style.backgroundColor = darkMode ? '#141d2f' : '#FFFFFF'; // Change body background color
+  }, [darkMode]);
 
   const toggleMode = () => {
-    setIsDarkMode(!isDarkMode);
-    // Additional logic to change theme or styles based on the mode change
-    document.body.classList.toggle("light-mode");
+    setDarkMode(!darkMode);
+    document.body.classList.toggle('light-mode');
+    document.body.style.backgroundColor = darkMode ? '#FFFFFF' : '#141d2f'; // Change body background color
   };
- 
+
   return (
     <>
-    <GlobalStyle/>
-    <Wrapper>
-        <Title>devfinder</Title>
-        <Button onClick={toggleMode}>
-          {isDarkMode ? 'LIGHT' : 'DARK' }
-          <Img src={isDarkMode ? Sun : Moon} alt="Sun icon" />
+      <GlobalStyle />
+      <Mode>
+        <Title isDarkMode={darkMode}>devfinder</Title>
+        <Button onClick={toggleMode} isDarkMode={darkMode}>
+          {darkMode ? 'LIGHT' : 'DARK'}
+          <Img src={darkMode ? Sun : Moon} alt="Mode Icon" isDarkMode={darkMode} />
         </Button>
-      </Wrapper>
-    <Search></Search>
-    <Main></Main>
+      </Mode>
+      {/* Other components */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
