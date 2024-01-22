@@ -1,14 +1,19 @@
 import  GlobalStyle  from './GlobalStyle';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import  {StyledComponent } from 'styled-components';
+import { ReactSVG } from 'react-svg';
 import Sun from './components/images/icon-sun.svg';
 import Moon from './components/images/icon-moon.svg';
+import Search from './components/search/Search';
 
 interface DarkModeProps {
   isDarkMode: boolean;
 }
+type SVGComponent = StyledComponent<typeof ReactSVG, DarkModeProps>;
+
 const Mode = styled.div`
-  width: 20.43rem;
+ // width: 20.43rem;//
   height: 2.3rem;
   display: flex;
   justify-content: center;
@@ -28,7 +33,7 @@ const Title = styled.h1<DarkModeProps>`
 `;
 
 const Button = styled.button<DarkModeProps>`
-  margin: 0;
+  margin-top: 0.5rem;
   padding: 0;
   display: flex;
   width: 5.56rem;
@@ -36,8 +41,9 @@ const Button = styled.button<DarkModeProps>`
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  color: ${(props) => (props.isDarkMode ? '#FFF' : '#000')};
-  background: #141d2f;
+  color: ${(props) => (props.isDarkMode ? '#fff' : '#4B6A9B')};
+  background: ${(props) => (props.isDarkMode ? '#141d2f' : '#F6F8FF')}; 
+  font-family: 'Space Mono',sans-serif;
   text-align: right;
   font-size: 0.8125rem;
   font-weight: 700;
@@ -46,13 +52,41 @@ const Button = styled.button<DarkModeProps>`
   cursor: pointer;
 
   &:hover {
-    color: #90a4d4;
+    color: ${(props) => (props.isDarkMode ? '#90a4d4' : '#222731')};
+   
   }
 `;
-const Img = styled.img<DarkModeProps>`
-  width: 1.25rem;
-  height: 1.25rem;
-  color: ${(props) => (props.isDarkMode ? '#FFF' : '#000')};
+const SunIcon: SVGComponent = styled(ReactSVG).attrs<DarkModeProps>((props) => ({
+  isDarkMode: props.isDarkMode,
+}))<DarkModeProps>`
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #fff;
+  }
+
+  &:hover {
+    svg {
+      color: #90a4d4;
+    }
+  }
+`;
+
+const MoonIcon: SVGComponent = styled(ReactSVG).attrs<DarkModeProps>((props) => ({
+  isDarkMode: props.isDarkMode,
+}))<DarkModeProps>`
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #90a4d4;
+   
+  }
+
+  &:hover {
+    svg {
+      color:#222731;
+    }
+  }
 `;
 
 
@@ -61,13 +95,13 @@ function App() {
 
   useEffect(() => {
     document.body.classList.toggle('light-mode', !darkMode);
-    document.body.style.backgroundColor = darkMode ? '#141d2f' : '#FFFFFF'; // Change body background color
+    document.body.style.backgroundColor = darkMode ? '#141d2f' : '#F6F8FF'; // Change body background color
   }, [darkMode]);
 
   const toggleMode = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('light-mode');
-    document.body.style.backgroundColor = darkMode ? '#FFFFFF' : '#141d2f'; // Change body background color
+    document.body.style.backgroundColor = darkMode ? '#F6F8FF' : '#141d2f'; // Change body background color
   };
 
   return (
@@ -76,10 +110,11 @@ function App() {
       <Mode>
         <Title isDarkMode={darkMode}>devfinder</Title>
         <Button onClick={toggleMode} isDarkMode={darkMode}>
-          {darkMode ? 'LIGHT' : 'DARK'}
-          <Img src={darkMode ? Sun : Moon} alt="Mode Icon" isDarkMode={darkMode} />
-        </Button>
+  {darkMode ? 'LIGHT' : 'DARK'}
+  {darkMode ? <SunIcon src={Sun} alt="Sun Icon" isDarkMode={darkMode} /> : <MoonIcon src={Moon} alt="Moon Icon" isDarkMode={darkMode} />}
+</Button>
       </Mode>
+      <Search></Search>
       {/* Other components */}
     </>
   );
