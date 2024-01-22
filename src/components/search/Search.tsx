@@ -5,7 +5,7 @@ import Ssvg from '../images/icon-search.svg'
 const Finde = styled.section`
 border-radius: 0.9375rem;
 background: #1E2A47;
-margin: 1.94rem 2.5rem 0 4.5rem;
+margin: 1.94rem auto 0 auto;
 display:flex;
 align-items:center;
 padding: 0.41rem 0.44rem 0.47rem  1rem;
