@@ -1,23 +1,20 @@
 import styled from "styled-components"
+import React from 'react';
 import { useState } from "react";
 import Ssvg from '../images/icon-search.svg'
 
-const Finde = styled.section`
-border-radius: 0.9375rem;
-background: #1E2A47;
-margin: 1.94rem auto 0 auto;
-display:flex;
-align-items:center;
-padding: 0.41rem 0.44rem 0.47rem  1rem;
-`;
-const Input = styled.input.attrs({ type: "text"})`
+interface DarkModeProps {
+  isDarkMode: boolean;
+}
+
+const Input = styled.input.attrs({ type: "text"})<DarkModeProps>`
 width:11.5rem;
 margin: 0 2.44rem 0 0.66rem;
-background: #1E2A47;
+background: ${(props) => (props.isDarkMode ? '#1E2A47' : '#FEFEFE;')};
 border:none;
-color:#fff;
+//color:${(props) => (props.isDarkMode ? '#4B6A9B;' : '#fff;')};
 &::placeholder {
-    color: #fff;
+  color:${(props) => (props.isDarkMode ? '#fff;' : '#4B6A9B;')};
   }
 outline: none;
 font-family: "Space Mono", sans-serif;
@@ -45,36 +42,49 @@ cursor: pointer;
   background-color: #60ABFF;
 }
 `
+const ModeSearch = styled.section<DarkModeProps>`
+  background: ${(props) => (props.isDarkMode ? '#1E2A47' : '#FEFEFE;')};
+  border-radius: 0.9375rem;
+  box-shadow: ${(props) => (props.isDarkMode ? '#1E2A47' : '0px 16px 30px -10px rgba(70, 96, 187, 0.20);')};
+  margin: 1.94rem auto 0 auto;
+  display:flex;
+  align-items:center;
+  padding: 0.41rem 0.44rem 0.47rem  1rem;
+ 
+`;
+const Search: React.FC<{ isDarkMode: boolean }> = ({ isDarkMode }) => {
+  const [searchUser, setSearchUser] = useState('');
+  const [user, setUser] = useState([]);
 
-export default  function Search (){
-
-  const[searchUser , setSearchUser] = useState ('')
-  const[user, setUser] = useState([]);
-
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchUser(e.target.value);
     
   };
+
   const handleSearch = () => {
-    setUser([])
-    setSearchUser('')
+    setUser([]);
+    setSearchUser('');
 
     // Perform search or any action with the searchUser state value
-    console.log("Search User:", searchUser);
+    console.log('Search User:', searchUser);
   };
 
-    return(
-        <>
-        <Finde>
+  return (
+    <>
+      <ModeSearch isDarkMode={isDarkMode}>
+      
         <img src={Ssvg}></img>
-       <Input   placeholder="Search GitHub username…"
+       <Input isDarkMode={isDarkMode}  placeholder="Search GitHub username…"
         value={searchUser}
         onChange={handleInputChange}></Input>
        <Button
        onClick={handleSearch}
        >
         Search</Button>
-        </Finde>
-        </>
-    )
-}
+    
+      </ModeSearch>
+    </>
+  );
+};
+
+export default Search;

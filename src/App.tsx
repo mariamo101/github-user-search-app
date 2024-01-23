@@ -1,8 +1,8 @@
 import  GlobalStyle  from './GlobalStyle';
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import  {StyledComponent } from 'styled-components';
 import { ReactSVG } from 'react-svg';
+import { SVGProps } from 'react';
 import Sun from './components/images/icon-sun.svg';
 import Moon from './components/images/icon-moon.svg';
 import Search from './components/search/Search';
@@ -10,7 +10,7 @@ import Search from './components/search/Search';
 interface DarkModeProps {
   isDarkMode: boolean;
 }
-type SVGComponent = StyledComponent<typeof ReactSVG, DarkModeProps>;
+type SVGComponent = React.SVGProps<SVGSVGElement> & DarkModeProps;
 
 const Mode = styled.div`
  // width: 20.43rem;//
@@ -56,9 +56,9 @@ const Button = styled.button<DarkModeProps>`
    
   }
 `;
-const SunIcon: SVGComponent = styled(ReactSVG).attrs<DarkModeProps>((props) => ({
+const SunIcon = styled(ReactSVG).attrs<SVGComponent>((props) => ({
   isDarkMode: props.isDarkMode,
-}))<DarkModeProps>`
+}))<SVGProps<SVGSVGElement> & DarkModeProps>`
   svg {
     width: 1.25rem;
     height: 1.25rem;
@@ -71,10 +71,9 @@ const SunIcon: SVGComponent = styled(ReactSVG).attrs<DarkModeProps>((props) => (
     }
   }
 `;
-
-const MoonIcon: SVGComponent = styled(ReactSVG).attrs<DarkModeProps>((props) => ({
+const MoonIcon = styled(ReactSVG).attrs<SVGComponent>((props) => ({
   isDarkMode: props.isDarkMode,
-}))<DarkModeProps>`
+}))<SVGProps<SVGSVGElement> & DarkModeProps>`
   svg {
     width: 1.25rem;
     height: 1.25rem;
@@ -110,14 +109,25 @@ function App() {
       <Mode>
         <Title isDarkMode={darkMode}>devfinder</Title>
         <Button onClick={toggleMode} isDarkMode={darkMode}>
-  {darkMode ? 'LIGHT' : 'DARK'}
-  {darkMode ? <SunIcon src={Sun} alt="Sun Icon" isDarkMode={darkMode} /> : <MoonIcon src={Moon} alt="Moon Icon" isDarkMode={darkMode} />}
+  {darkMode ? (
+    <>
+      LIGHT
+      <SunIcon src={Sun} alt="Sun Icon" isDarkMode={darkMode} />
+    </>
+  ) : (
+    <>
+      DARK
+      <MoonIcon src={Moon} alt="Moon Icon" isDarkMode={darkMode} />
+    </>
+  )}
 </Button>
+
       </Mode>
-      <Search></Search>
+      <Search isDarkMode={darkMode} />
       {/* Other components */}
     </>
   );
 }
 
 export default App;
+
